@@ -9,6 +9,17 @@
 import { initialCards } from "./cards.js";
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
+
+// Настройки валидации
+const validationSettings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
 
 // DOM узлы
 const placesWrap = document.querySelector(".places__list");
@@ -85,16 +96,20 @@ openProfileFormButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
   openModalWindow(profileFormModalWindow);
+  // Очищаем валидацию
+  clearValidation(profileFormModalWindow.querySelector(".popup__form"), validationSettings);
 });
 
 profileAvatar.addEventListener("click", () => {
   avatarForm.reset();
   openModalWindow(avatarFormModalWindow);
+  clearValidation(avatarFormModalWindow.querySelector(".popup__form"), validationSettings);
 });
 
 openCardFormButton.addEventListener("click", () => {
   cardForm.reset();
   openModalWindow(cardFormModalWindow);
+  clearValidation(cardFormModalWindow.querySelector(".popup__form"), validationSettings);
 });
 
 // отображение карточек
@@ -113,3 +128,5 @@ const allPopups = document.querySelectorAll(".popup");
 allPopups.forEach((popup) => {
   setCloseModalWindowEventListeners(popup);
 });
+// Включаем валидацию всех форм
+enableValidation(validationSettings);
